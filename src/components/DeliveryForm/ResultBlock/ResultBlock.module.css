@@ -1,0 +1,16 @@
+.result {
+  margin-left: auto;
+  padding: 1em;
+  width: 100%;
+  font-weight: bold;
+}
+
+.result > p {
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .result {
+    width: 300px;
+  }
+}
