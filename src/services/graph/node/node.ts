@@ -1,5 +1,5 @@
-type EdgeConstructor<T> = { node: T; weight: number }
-type Edge<T> = Map<T, number>
+export type EdgeConstructor<T> = { node: T; weight: number }
+export type Edge = { weight: number }
 
 /**
  * Node for graph
@@ -9,12 +9,12 @@ type Edge<T> = Map<T, number>
  */
 export class Node<T> {
   private _name: T
-  private _edges: Edge<T>
+  private _edges: Map<T, Edge>
 
   constructor(name: T, edges: EdgeConstructor<T>[] = []) {
     this._name = name
     this._edges = new Map()
-    edges.forEach(({ node, weight }) => this._edges.set(node, weight))
+    edges.forEach(({ node, weight }) => this._edges.set(node, { weight }))
   }
 
   public get name(): T {
@@ -25,11 +25,11 @@ export class Node<T> {
     this._name = name
   }
 
-  public get edges(): Edge<T> {
+  public get edges(): Map<T, Edge> {
     return this._edges
   }
 
-  public set edges(edges: Edge<T>) {
+  public set edges(edges: Map<T, Edge>) {
     this._edges = edges
   }
 }

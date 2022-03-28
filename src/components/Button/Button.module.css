@@ -1,0 +1,20 @@
+.button {
+  padding: 0.7em 1.7em;
+  border-radius: 0.5em;
+  font-size: 1.1em;
+  border-radius: 0.5em;
+  background-color: var(--background-white);
+  border: 1px solid var(--background-white);
+  transition: all 0.3s;
+  box-shadow: 6px 6px 12px var(--gray-b), -6px -6px 12px var(--white);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.button:hover {
+  border-color: var(--white);
+}
+
+.button:active {
+  box-shadow: 4px 4px 12px var(--gray-c), -4px -4px 12px var(--white);
+}
