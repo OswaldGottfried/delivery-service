@@ -124,4 +124,43 @@ export class Graph<T> {
 
     return cost
   }
+
+  /**
+   * Calculate the number of possible delivery routes that can be constructed by given conditions
+   * @param {RouteType<T>} route [start, end]
+   * @returns {number} count of routes
+   */
+  path(route: RouteType<T>): number {
+    const [start, finish] = route
+    let countOfRoutes = 0
+
+    const queue = [start]
+    const result: Record<number, T[]> = { 0: [] }
+    const visited = new Map<T, boolean>()
+    visited.set(start, true)
+
+    while (queue.length) {
+      const currentNode: T | undefined = queue.shift()
+
+      if (
+        currentNode === finish ||
+        !currentNode
+        // (stops && result[countOfRoutes].length === stops)
+      ) {
+        countOfRoutes = countOfRoutes + 1
+        break
+      }
+
+      result[countOfRoutes].push(currentNode)
+
+      this._nodes.get(currentNode)?.forEach(({ node }) => {
+        if (!visited.has(node)) {
+          visited.set(node, true)
+          queue.push(node)
+        }
+      })
+    }
+
+    return countOfRoutes
+  }
 }

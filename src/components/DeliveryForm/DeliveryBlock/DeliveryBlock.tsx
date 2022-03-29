@@ -5,11 +5,26 @@ import { Button } from '../../Button/Button'
 import { Card } from '../../Card/Card'
 import { ErrorBoundary } from '../../ErrorBoundary/ErrorBoundary'
 import { Select } from '../../Select/Select'
-import { ResultBlock } from '../ResultBlock/ResultBlock'
+import {
+  ResultBlock,
+  Props as ResultBlockProps,
+} from '../ResultBlock/ResultBlock'
 
 import style from './DeliveryBlock.module.css'
 
-export const CalculateCost = () => {
+type Props = {
+  title: string
+  multiroad?: boolean
+  resultMessage: string
+  deliveryFunc: ResultBlockProps['deliveryFunc']
+}
+
+export const CalculateCost: React.FC<Props> = ({
+  title,
+  resultMessage,
+  multiroad,
+  deliveryFunc,
+}) => {
   const towns = getTowns().nodeKeys
   const defaultState = { start: '', end: '' }
   const [route, setRoute] = useState(defaultState)
@@ -47,7 +62,7 @@ export const CalculateCost = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <h2 className={style.title}>Calculate road cost</h2>
+      <h2 className={style.title}>{title}</h2>
       <Select
         label="From"
         name="start"
@@ -73,12 +88,15 @@ export const CalculateCost = () => {
         options={towns}
       />
       <div className={style.buttons}>
-        <Button onClick={addRoute}>Add route</Button>
+        {multiroad && <Button onClick={addRoute}>Add route</Button>}
         <Button onClick={handleClear}>Clear</Button>
-
         <Card className={style.result}>
           <ErrorBoundary key={routeArray.join('')}>
-            <ResultBlock route={routeArray} />
+            <ResultBlock
+              text={resultMessage}
+              route={routeArray}
+              deliveryFunc={deliveryFunc}
+            />
           </ErrorBoundary>
         </Card>
       </div>

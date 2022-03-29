@@ -1,24 +1,23 @@
 import { getTowns } from '../../../api/getTowns'
 import { RouteType } from '../../../services/graph/graph/graph'
 
-type Props = {
+export type Props = {
   route: RouteType<string>
+  deliveryFunc: 'getDeliveryCost' | 'path'
+  text: string
 }
 
-export const ResultBlock: React.FC<Props> = ({ route }) => {
-  let routeCost
+export const ResultBlock: React.FC<Props> = ({ route, text, deliveryFunc }) => {
+  let result
+
   if (route[0] && route[1]) {
-    routeCost = getTowns().getDeliveryCost(route)
+    result = getTowns()[deliveryFunc](route)
   }
 
   const isValidForm = !route.some((item) => !item)
   const pathString = route.join('->')
 
   return (
-    <p>
-      {isValidForm
-        ? `Delivery cost for route ${pathString} is ${routeCost}`
-        : 'Choose route'}
-    </p>
+    <p>{isValidForm ? `${text} ${pathString} is ${result}` : 'Choose route'}</p>
   )
 }
