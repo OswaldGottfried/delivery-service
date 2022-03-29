@@ -2,3 +2,7 @@
   width: 100%;
   max-width: 700px;
 }
+
+.card:not(:last-child) {
+  margin-bottom: 2em;
+}

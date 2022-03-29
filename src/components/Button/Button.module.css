@@ -1,8 +1,7 @@
 .button {
   padding: 0.7em 1.7em;
-  border-radius: 0.5em;
   font-size: 1.1em;
-  border-radius: 0.5em;
+  border-radius: 30px;
   background-color: var(--background-white);
   border: 1px solid var(--background-white);
   transition: all 0.3s;
