@@ -12,17 +12,23 @@
 
 .result {
   margin-left: auto;
-  padding: 1em;
+  padding: 1em 2em;
   width: 100%;
+  display: flex;
+  align-items: center;
   font-weight: bold;
+  order: -1;
 }
 
 .result > p {
   margin: 0;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .result {
-    width: 300px;
+    width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    order: 1;
   }
 }

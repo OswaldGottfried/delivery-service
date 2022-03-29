@@ -1,11 +1,16 @@
 import { Node, Edge } from '../node/node'
 import { PriorityQueue } from './PriorityQueue'
 
+export type RouteType<T> = {
+  0: T
+  1: T
+} & T[]
+
 /**
  * Directed weighted graphs
  */
 export class Graph<T> {
-  private _nodes: Map<T, Map<T, Edge>>
+  private _nodes: Map<T, Map<T, Edge<T>>>
 
   constructor(nodes: Node<T>[] = []) {
     this._nodes = new Map()
@@ -33,7 +38,7 @@ export class Graph<T> {
     const fromNode = this._nodes.get(from)
     if (!fromNode) return
 
-    this._nodes.set(from, fromNode.set(to, { weight }))
+    this._nodes.set(from, fromNode.set(to, { weight, node: to }))
   }
 
   removeEdge(node: T, edge: T) {
@@ -48,11 +53,11 @@ export class Graph<T> {
    * @returns {T[]} shortest way
    */
   findShortestWay(start: T, finish: T): T[] {
-    // keep all the nodes with numbers that represent its total cost from starting vertex.
+    // keep all the nodes with numbers that represent its total cost from starting node.
     const costFromStartTo = new Map<T, number>()
     // this queue tells which nodes needs to be checked next
     const queue = new PriorityQueue<T>()
-    // list of all the nodes that keep the record of which vertex was previously visited to discover its current cost
+    // list of all the nodes that keep the record of which node was previously visited to discover its current cost
     const prev = new Map<T, T | null>()
     const result: T[] = []
 
@@ -80,12 +85,12 @@ export class Graph<T> {
         })
         break
       } else {
-        currentNode.forEach((neighborCost, node) => {
+        currentNode.forEach((neighborEdge, node) => {
           if (!current) return
 
           const currentCost = Number(costFromStartTo.get(current))
           const neighborCostFromStartTo = Number(costFromStartTo.get(node))
-          const costToNeighbor = currentCost + neighborCost.weight
+          const costToNeighbor = currentCost + neighborEdge.weight
 
           if (costToNeighbor < neighborCostFromStartTo) {
             costFromStartTo.set(node, costToNeighbor)
@@ -99,12 +104,12 @@ export class Graph<T> {
     return result.reverse()
   }
 
-  getDeliveryCost(
-    routes: {
-      0: T
-      1: T
-    } & Array<T>,
-  ) {
+  /**
+   * Calculate the delivery cost for a given delivery route
+   * @param {RouteType<T>} routes delivery route
+   * @returns {number} delivery cost
+   */
+  getDeliveryCost(routes: RouteType<T>): number {
     let cost = 0
     routes.forEach((route, index) => {
       // We should stop on the end of list

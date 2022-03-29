@@ -18,7 +18,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: var(--baseColor);
   min-height: calc(100vh - 80px);
-  min-width: 100vh;
   color: var(--text-color);
 }
 
