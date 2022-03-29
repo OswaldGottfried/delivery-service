@@ -17,7 +17,7 @@ export const DeliveryForm: React.FC = () => (
       <CalculateCost
         title="Calculate the number of possible delivery routes"
         resultMessage="Count of routes for"
-        deliveryFunc="path"
+        deliveryFunc="getCountOfRoutes"
       />
     </Card>
   </>

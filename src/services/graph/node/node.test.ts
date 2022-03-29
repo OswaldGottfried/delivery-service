@@ -9,8 +9,8 @@ describe('Node class', () => {
     ])
 
     const expectedNode = new Map()
-    expectedNode.set('A', { weight: 1 })
-    expectedNode.set('B', { weight: 3 })
+    expectedNode.set('A', { node: 'A', weight: 1 })
+    expectedNode.set('B', { node: 'B', weight: 3 })
 
     expect(node.edges).toEqual(expectedNode)
   })
