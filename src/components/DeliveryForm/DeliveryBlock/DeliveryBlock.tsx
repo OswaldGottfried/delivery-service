@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { getTowns } from '../../../api/getTowns'
+import { RouteType } from '../../../services/graph/graph/graph'
 import { Button } from '../../Button/Button'
 import { Card } from '../../Card/Card'
 import { ErrorBoundary } from '../../ErrorBoundary/ErrorBoundary'
@@ -12,6 +13,7 @@ export const CalculateCost = () => {
   const towns = getTowns().nodeKeys
   const defaultState = { start: '', end: '' }
   const [route, setRoute] = useState(defaultState)
+  const [stops, setStops] = useState<string[]>([])
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
@@ -19,9 +21,19 @@ export const CalculateCost = () => {
 
   const handleClear = () => {
     setRoute(defaultState)
+    setStops([])
   }
 
-  const routeArray = Object.values(route)
+  const routeStops = Object.keys(route).filter(
+    (item) => item !== 'start' && item !== 'end',
+  )
+  const stopsValue = routeStops.map((item) => route[item as keyof typeof route])
+  // @ts-ignore
+  const routeArray: RouteType<string> = [route.start, ...stopsValue, route.end]
+
+  const addRoute = () => {
+    setStops((prevState) => [...prevState, `stop ${stops.length + 1}`])
+  }
 
   const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const updatedItem = {
@@ -42,17 +54,26 @@ export const CalculateCost = () => {
         value={route.start}
         onChange={onChange}
         options={towns}
-      ></Select>
+      />
+      {stops.map((stop) => (
+        <Select
+          key={stop}
+          label="Stop"
+          name={String(stop)}
+          value={route[stop as keyof typeof route]}
+          onChange={onChange}
+          options={towns}
+        />
+      ))}
       <Select
         label="To"
         name="end"
         value={route.end}
         onChange={onChange}
         options={towns}
-      ></Select>
+      />
       <div className={style.buttons}>
-        {/* TODO: implement adding new stops */}
-        <Button disabled>Add route</Button>
+        <Button onClick={addRoute}>Add route</Button>
         <Button onClick={handleClear}>Clear</Button>
 
         <Card className={style.result}>
