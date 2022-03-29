@@ -27,4 +27,17 @@ describe('class Graph', () => {
       )
     })
   })
+
+  describe('method getCountOfRoutes', () => {
+    const CASES = [
+      { a: 'E', b: 'D', expected: 4 },
+      { a: 'E', b: 'E', expected: 5 },
+    ]
+    it.each(CASES)(
+      'should return $expected for route $a -> $b',
+      ({ a, b, expected }) => {
+        expect(graph.getCountOfRoutes([a, b])).toBe(expected)
+      },
+    )
+  })
 })

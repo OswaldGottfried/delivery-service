@@ -3,7 +3,7 @@ import { RouteType } from '../../../services/graph/graph/graph'
 
 export type Props = {
   route: RouteType<string>
-  deliveryFunc: 'getDeliveryCost' | 'path'
+  deliveryFunc: 'getDeliveryCost' | 'getCountOfRoutes'
   text: string
 }
 

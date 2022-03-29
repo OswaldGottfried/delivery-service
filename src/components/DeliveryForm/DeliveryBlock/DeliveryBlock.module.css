@@ -22,6 +22,8 @@
 
 .result > p {
   margin: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
